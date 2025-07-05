@@ -43,6 +43,7 @@ body {
   flex-shrink: 0;
 }
 
+<<<<<<< HEAD
 .header-controls {
   display: flex;
   flex-direction: column;
@@ -83,6 +84,8 @@ body {
   user-select: none;
 }
 
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 .app-title {
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
@@ -437,6 +440,7 @@ body {
   background: #2a1a1a;
 }
 
+<<<<<<< HEAD
 .restore-btn {
   background: transparent;
   border: none;
@@ -456,6 +460,8 @@ body {
   background: #1a2a1a;
 }
 
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 /* Todo List Styles */
 .todo-list-item {
   background: #1a1a1a;
@@ -589,6 +595,7 @@ body {
   min-height: 200px;
 }
 
+<<<<<<< HEAD
 .loading-state {
   text-align: center;
   color: #e5e5e5;
@@ -611,6 +618,8 @@ body {
   margin: 0;
 }
 
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 /* Calendar Dropdown Styles */
 .calendar-dropdown {
   position: absolute;
@@ -742,6 +751,7 @@ input:focus {
     margin-bottom: 2rem;
   }
 
+<<<<<<< HEAD
   .header-controls {
     flex-direction: column;
     gap: 0.75rem;
@@ -752,6 +762,8 @@ input:focus {
     font-size: 0.85rem;
   }
 
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
   .add-form {
     flex-direction: column;
     gap: 0.75rem;
@@ -1023,6 +1035,7 @@ input:focus {
   font-style: italic;
   font-size: 0.85rem;
   color: #aaa;
+<<<<<<< HEAD
 }
 
 @media (max-width: 600px) {
@@ -1092,4 +1105,6 @@ input:focus {
   --task-action-bg: #f5f5f5;
   --task-action-border: #ddd;
   --task-action-icon: #222;
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 }

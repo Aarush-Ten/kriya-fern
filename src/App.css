@@ -1048,6 +1048,7 @@ input:focus {
   border-color: #4f8cff;
 }
 
+<<<<<<< HEAD
 .role-info {
   width: 100%;
   margin-bottom: 1.2rem;
@@ -1076,6 +1077,8 @@ input:focus {
   font-style: italic;
 }
 
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 .google-login-btn {
   width: 100%;
   padding: 0.7rem 0;
@@ -1112,6 +1115,7 @@ input:focus {
     max-width: 98vw;
   }
 }
+<<<<<<< HEAD
 /* --- End AuthPage Styles --- */
 
 /* --- UserDashboard Styles --- */
@@ -1655,3 +1659,6 @@ input:focus {
 }
 
 /* --- End UserDashboard Styles --- */
+=======
+/* --- End AuthPage Styles --- */
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f

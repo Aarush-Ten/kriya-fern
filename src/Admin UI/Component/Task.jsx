@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { Check, Trash2, StickyNote, Pencil, X, Save, Flag, MessageCircle, Paperclip } from 'lucide-react';
 import { useAuth } from '../../App';
 import { db } from '../../firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+=======
+import React, { useState } from 'react';
+import { Check, Trash2, StickyNote, Pencil, X, Save, Flag } from 'lucide-react';
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
 // Components
 import Notes from './Notes';
@@ -22,6 +27,7 @@ const Task = ({
 }) => {
   const [showNotes, setShowNotes] = useState(false);
   const [notesText, setNotesText] = useState(task.note || '');
+<<<<<<< HEAD
   const [showChat, setShowChat] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState(task.comments || []);
@@ -58,6 +64,11 @@ const Task = ({
 
   const handleSaveNote = () => {
     onSave(task.id, notesText, comments, attachments);
+=======
+  
+  const handleSaveNote = () => {
+    onSave(task.id, notesText);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     setShowNotes(false);
   };
 
@@ -104,6 +115,7 @@ const Task = ({
     return `${dateStr} at ${timeStr}`;
   };
 
+<<<<<<< HEAD
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     // For demo, use base64. In production, upload to Firebase Storage and save URLs.
@@ -139,6 +151,10 @@ const Task = ({
 
   return (
     <div className={`task-item ${task.completed ? 'completed' : ''}`} style={{borderBottomColor: priority === 'low' ? "#44ff44" : priority === 'mid' ? '#ffd528' :'#ff4444', background: isOverdue ? '#2a0a0a' : isDueSoon ? '#2a1a0a' : undefined}}>
+=======
+  return (
+    <div className={`task-item ${task.completed ? 'completed' : ''}`} style={{borderBottomColor: priority === 'low' ? "#44ff44" : priority === 'mid' ? '#ffd528' :'#ff4444'}}>
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
       <div className="task-content">
         <div style={{display:'flex',alignItems:'center',gap:12}}>
           <button
@@ -172,12 +188,15 @@ const Task = ({
             <div className="deadline-text">
               Deadline: {formatDeadlineWithTime(task.deadline, task.deadlineTime)}
             </div>
+<<<<<<< HEAD
             {task.note && task.note.trim() !== '' && (
               <div className="task-note-display" style={{marginTop: '0.5em', color: '#ffd528', background: '#232323', borderRadius: '6px', padding: '0.5em 0.75em', fontSize: '0.97em', display: 'flex', alignItems: 'center', gap: '0.5em'}}>
                 <StickyNote size={16} style={{color: '#ffaa44'}} />
                 <span>{task.note}</span>
               </div>
             )}
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           </div>
         </div>
         <div className='priority'>
@@ -190,6 +209,7 @@ const Task = ({
           )}
           <span>{priority}</span>
         </div>
+<<<<<<< HEAD
         {isOverdue && <span style={{color:'#ff4444',fontWeight:600,marginLeft:'0.5em'}}>Overdue</span>}
         {isDueSoon && <span style={{color:'#ffd528',fontWeight:600,marginLeft:'0.5em'}}>Due Soon</span>}
       </div>
@@ -220,6 +240,32 @@ const Task = ({
         <input type="file" multiple style={{display:'none'}} ref={fileInputRef} onChange={handleFileChange} />
         <button onClick={() => setShowTimeline(t => !t)} className="timeline-btn" style={{background:'none',border:'none',padding:'0.5em',borderRadius:'8px',transition:'background 0.2s',color:'var(--task-action-icon, #222)'}} title="Show activity timeline">🕒</button>
       </div>
+=======
+      </div>
+
+      <button onClick={() => setShowNotes(true)} className="note-btn">
+        <StickyNote size={16} />
+      </button>
+
+      {isEditing ? (
+        <>
+          <button onClick={handleSaveEdit} title="Save changes">
+            <Save size={16} />
+          </button>
+          <button onClick={handleCancelEdit} title="Cancel editing">
+            <X size={16} />
+          </button>
+        </>
+      ) : (
+        <button onClick={handleEditTask} title="Edit task">
+          <Pencil size={16} />
+        </button>
+      )}
+
+      <button onClick={() => onDelete(task.id)} className="delete-btn">
+        <Trash2 size={16} />
+      </button>
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
       {showNotes && (
         <Notes
@@ -229,6 +275,7 @@ const Task = ({
           onSave={handleSaveNote}
         />
       )}
+<<<<<<< HEAD
 
       {showChat && (
         <div className="modal-overlay">
@@ -293,6 +340,8 @@ const Task = ({
           ))}
         </div>
       )}
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     </div>
   );
 };

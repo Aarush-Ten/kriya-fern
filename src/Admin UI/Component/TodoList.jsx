@@ -6,18 +6,24 @@ import CustomDropdown from "./CustomDropDown";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CalendarDays } from "lucide-react";
+<<<<<<< HEAD
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 Chart.register(ArcElement, Tooltip, Legend);
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
 const TodoList = ({
   list,
   onComplete,
   onDelete,
+<<<<<<< HEAD
   onRestore,
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
   onCompleteTask,
   onDeleteTask,
   editingTaskInfo,
@@ -29,7 +35,10 @@ const TodoList = ({
   onAddTaskToSublist,
   onCompleteSublistTask,
   onDeleteSublistTask,
+<<<<<<< HEAD
   showHiddenUsers,
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 }) => {
   const [showTasks, setShowTasks] = useState(false);
   const [showSubTasks, setShowSubTasks] = useState(false);
@@ -39,12 +48,15 @@ const TodoList = ({
   const [sublistCalendars, setSublistCalendars] = useState({});
   const [sublistDeadlines, setSublistDeadlines] = useState({});
   const [sublistTimes, setSublistTimes] = useState({});
+<<<<<<< HEAD
   const [taskOrder, setTaskOrder] = useState(list.tasks.map(t => t.id));
   const [filterPriority, setFilterPriority] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [sortBy, setSortBy] = useState('default');
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [quickAddText, setQuickAddText] = useState('');
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
   const priorityOrder = {
     low: 3,
@@ -103,6 +115,7 @@ const TodoList = ({
 
   const timeOptions = generateTimeOptions();
 
+<<<<<<< HEAD
   const filteredTasks = list.tasks.filter(task =>
     (filterPriority === 'all' || task.priority === filterPriority) &&
     (filterStatus === 'all' || (filterStatus === 'completed' ? task.completed : !task.completed))
@@ -112,6 +125,13 @@ const TodoList = ({
     if (sortBy === 'due') return new Date(a.deadline) - new Date(b.deadline);
     return 0;
   });
+=======
+  const sortedTasks = useMemo(() => {
+    return [...list.tasks].sort(
+      (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
+    );
+  }, [list.tasks]);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
   useEffect(() => {
     const saved = localStorage.getItem(`dontAskAgain_task_list_${list.id}`);
@@ -120,8 +140,11 @@ const TodoList = ({
     }
   }, [list.id]);
 
+<<<<<<< HEAD
   useEffect(() => { setTaskOrder(list.tasks.map(t => t.id)); }, [list.tasks]);
 
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
   const toggleDoNotAskTaskDelete = () => {
     const updated = !doNotAskTaskDelete;
     setDoNotAskTaskDelete(updated);
@@ -186,6 +209,7 @@ const TodoList = ({
     ? totalTasks
     : list.tasks.filter((task) => task.completed).length;
 
+<<<<<<< HEAD
   const onSaveNote = async (taskId, noteText, sublistId = null, updatedComments = [], updatedAttachments = [], updatedTimeline = []) => {
     // Find the user (list) this task belongs to
     const user = list;
@@ -290,6 +314,8 @@ const TodoList = ({
     ],
   };
 
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
   return (
     <div className={`todo-list-item ${list.completed ? "completed" : ""}`}>
       <div className="list-header">
@@ -314,6 +340,7 @@ const TodoList = ({
           >
             <List size={16} />
           </button>
+<<<<<<< HEAD
           {showHiddenUsers && !list.visible ? (
             <button onClick={() => onRestore(list.id)} className="restore-btn" title="Restore User">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -328,6 +355,11 @@ const TodoList = ({
               <Trash2 size={16} />
             </button>
           )}
+=======
+          <button onClick={() => onDelete(list.id)} className="delete-btn">
+            <Trash2 size={16} />
+          </button>
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
         </div>
       </div>
 
@@ -352,6 +384,7 @@ const TodoList = ({
       )}
 
       {showTasks && (
+<<<<<<< HEAD
         <div className="task-controls-chart" style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -434,6 +467,36 @@ const TodoList = ({
               )}
             </Droppable>
           </DragDropContext>
+=======
+        <div className="list-tasks">
+          <div className="tasks-container">
+            {sortedTasks.map((task) => (
+              <Task
+                key={task.id}
+                task={task}
+                onComplete={(taskId) => onCompleteTask(list.id, taskId)}
+                onDelete={(taskId) =>
+                  onDeleteTask(list.id, taskId, doNotAskTaskDelete)
+                }
+                priority={task.priority}
+                onEdit={() => handleEditTaskText(list.id, task.id)}
+                doNotAskTaskDelete={doNotAskTaskDelete}
+                isEditing={
+                  editingTaskInfo?.listId === list.id &&
+                  editingTaskInfo?.taskId === task.id &&
+                  !editingTaskInfo?.sublistId
+                }
+                editingText={editingText}
+                setEditingText={setEditingText}
+                onSaveEdit={onSaveEdit}
+                onCancelEdit={onCancelEdit}
+              />
+            ))}
+            {list.tasks.length === 0 && (
+              <p className="empty-state">No tasks in this list yet.</p>
+            )}
+          </div>
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
           {list.lists && list.lists.length > 0 && (
             <div className="sublists-section">
@@ -606,7 +669,10 @@ const TodoList = ({
                                 setEditingText={setEditingText}
                                 onSaveEdit={onSaveEdit}
                                 onCancelEdit={onCancelEdit}
+<<<<<<< HEAD
                                 onSave={(taskId, noteText, updatedComments, updatedAttachments) => onSaveNote(taskId, noteText, subList.id, updatedComments, updatedAttachments)}
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
                               />
                             ))
                         ) : (

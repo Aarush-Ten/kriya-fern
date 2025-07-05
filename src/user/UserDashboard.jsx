@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import { useAuth, useTheme } from '../App';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -15,10 +16,28 @@ const UserDashboard = () => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [showNotes, setShowNotes] = useState(false);
   const [notesText, setNotesText] = useState('');
+=======
+import { useAuth } from '../App';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import Checklist from '../components/Checklist';
+import Task from '../components/Task';
+import Notes from '../components/Notes';
+import ProgressBar from '../components/ProgressBar';
+import '../components/Comp Css/CustomDropdown.css';
+import '../components/Comp Css/Notes.css';
+import '../components/Comp Css/ProgressBar.css';
+
+const UserDashboard = () => {
+  const { user } = useAuth();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
   useEffect(() => {
     const fetchUserData = async () => {
       if (user) {
+<<<<<<< HEAD
         try {
         const userDoc = await getDoc(doc(db, 'users', user.uid));
         if (userDoc.exists()) {
@@ -26,6 +45,11 @@ const UserDashboard = () => {
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
+=======
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
         }
       }
       setLoading(false);
@@ -33,6 +57,7 @@ const UserDashboard = () => {
     fetchUserData();
   }, [user]);
 
+<<<<<<< HEAD
   const handleCompleteTask = async (taskId) => {
     if (!userData || !user) return;
 
@@ -522,8 +547,31 @@ const UserDashboard = () => {
           </div>
         </div>
       )}
+=======
+  if (loading) return <div>Loading your dashboard...</div>;
+  if (!userData) return <div>No user data found.</div>;
+
+  return (
+    <div className="user-dashboard-container">
+      <div className="user-main-box">
+        <h2>Welcome, {userData.fullName || user.email}!</h2>
+        <div className="dashboard-section">
+          {/* Example: Render user's tasks if available */}
+          {userData.tasks && userData.tasks.length > 0 ? (
+            <Checklist tasks={userData.tasks} />
+          ) : (
+            <div>No tasks found. Start by adding a new task!</div>
+          )}
+        </div>
+        {/* You can add more sections for Notes, Progress, etc. */}
+      </div>
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default UserDashboard;
+=======
+export default UserDashboard;
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f

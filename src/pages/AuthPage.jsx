@@ -15,8 +15,13 @@ import '../index.css';
 import { useAuth } from '../App';
 import { useNavigate } from 'react-router-dom';
 
+<<<<<<< HEAD
 // Simplified AuthPage component that works with the main app's authentication flow
 const AuthPage = () => {
+=======
+// Accept both onAuthActionStart and onAuthActionComplete props
+const AuthPage = ({ onLoginSuccess, onAuthActionStart, onAuthActionComplete, onGuestLoginSuccess }) => {
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,19 +35,40 @@ const AuthPage = () => {
   const { role, user } = useAuth ? useAuth() : { role: null, user: null };
   const navigate = useNavigate();
 
+<<<<<<< HEAD
   // The main app will handle redirects based on authentication state
+=======
+  // Redirect to dashboard after login based on role
+  useEffect(() => {
+    if (user && role) {
+      if (role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else if (role === 'user') {
+        navigate('/user', { replace: true });
+      }
+    }
+  }, [user, role, navigate]);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); // Clear previous errors
     setLoading(true); // Disable form button
 
+<<<<<<< HEAD
     // Authentication action started
+=======
+    // Inform App.jsx that an auth action has started
+    if (onAuthActionStart) {
+      onAuthActionStart(); // This will make App.jsx show the global loading screen
+    }
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
     try {
       if (isLogin) {
         // --- Login Logic ---
         await signInWithEmailAndPassword(auth, email, password);
+<<<<<<< HEAD
         
         // Check user's actual registered role
         console.log('User attempting login as:', loginRole);
@@ -77,17 +103,31 @@ const AuthPage = () => {
         
         console.log(`User logged in as ${loginRole} successfully!`);
         // The main app's onAuthStateChanged will handle the redirect automatically
+=======
+        console.log(`User logged in as ${loginRole} successfully!`);
+        onLoginSuccess(); // This will trigger App.jsx's onAuthStateChanged
+        // App.jsx's onAuthStateChanged will then set isAuthTransitioning to false,
+        // so no need to call onAuthActionComplete here directly for successful login.
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
       } else {
         // --- Registration Logic ---
         if (password !== confirmPassword) {
           setError('The passwords you entered do not match. Please try again.');
           setLoading(false);
+<<<<<<< HEAD
+=======
+          if (onAuthActionComplete) onAuthActionComplete(); // Dismiss global loading on local validation fail
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           return;
         }
 
         if (mobileNumber && !/^\d{10,15}$/.test(mobileNumber)) {
           setError('Please enter a valid mobile number (10 to 15 digits, numbers only).');
           setLoading(false);
+<<<<<<< HEAD
+=======
+          if (onAuthActionComplete) onAuthActionComplete(); // Dismiss global loading on local validation fail
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           return;
         }
 
@@ -102,6 +142,7 @@ const AuthPage = () => {
         }
 
         // **** CRUCIAL ADDITION: Save user's role and profile data to Firestore ****
+<<<<<<< HEAD
         // This creates a document in the appropriate collection based on selected role
         if (loginRole === 'admin') {
           // Create admin user in admins collection
@@ -124,6 +165,17 @@ const AuthPage = () => {
           });
           console.log('User profile saved to Firestore with role "user".');
         }
+=======
+        // This creates a document in the 'users' collection with the user's UID as its ID.
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          fullName: fullName,
+          mobileNumber: mobileNumber,
+          role: 'user', // Default role for self-registered users
+          createdAt: serverTimestamp(), // Use Firestore's server timestamp
+        });
+        console.log('User profile saved to Firestore with role "user".');
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
         console.log('User registered successfully!', user);
 
@@ -180,7 +232,17 @@ const AuthPage = () => {
       setError(errorMessage);
     } finally {
       setLoading(false); // Ensure local form loading is always turned off
+<<<<<<< HEAD
       // Error handling completed
+=======
+      // If an error occurred, explicitly signal completion to App.jsx.
+      // App.jsx's onAuthStateChanged won't necessarily fire on an error if no state change happens.
+      if (error && onAuthActionComplete) {
+          onAuthActionComplete(); // This will dismiss the global loading screen
+      }
+      // If it's a successful login, onAuthStateChanged in App.jsx handles setting isAuthTransitioning to false.
+      // If it's a successful registration, onAuthStateChanged also handles it after the signOut.
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     }
   };
 
@@ -197,10 +259,15 @@ const AuthPage = () => {
   const handleGoogleLogin = async () => {
     setError('');
     setLoading(true);
+<<<<<<< HEAD
+=======
+    if (onAuthActionStart) onAuthActionStart();
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+<<<<<<< HEAD
       
       // Check if user exists in any collection
       const adminDoc = await getDoc(doc(db, 'admins', user.uid));
@@ -252,10 +319,30 @@ const AuthPage = () => {
       }
       
       // Google login successful - main app will handle redirect
+=======
+      // Check if user doc exists
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+      if (!userDocSnap.exists()) {
+        // New user, create user doc
+        await setDoc(userDocRef, {
+          email: user.email,
+          fullName: user.displayName || '',
+          mobileNumber: '',
+          role: 'user',
+          createdAt: serverTimestamp(),
+        });
+      }
+      if (onLoginSuccess) onLoginSuccess();
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     } catch (err) {
       setError('Google login failed. ' + err.message);
     } finally {
       setLoading(false);
+<<<<<<< HEAD
+=======
+      if (onAuthActionComplete) onAuthActionComplete();
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     }
   };
 
@@ -270,7 +357,11 @@ const AuthPage = () => {
         name: guestName,
         createdAt: serverTimestamp(),
       });
+<<<<<<< HEAD
       // Guest login successful
+=======
+      if (onGuestLoginSuccess) onGuestLoginSuccess(guestId, guestName);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     } catch (err) {
       setError('Failed to login as guest. Please try again.');
     } finally {
@@ -284,6 +375,7 @@ const AuthPage = () => {
         <h2 className="auth-title">{isLogin ? 'Login' : 'Register'}</h2>
 
         {/* User/Admin Role Switcher */}
+<<<<<<< HEAD
         <div className="login-role-switch">
             <button
                 type="button"
@@ -313,6 +405,26 @@ const AuthPage = () => {
               </p>
             )}
         </div>
+=======
+        {isLogin && ( // Only show role switch on login page
+            <div className="login-role-switch">
+                <button
+                    type="button"
+                    className={`role-button ${loginRole === 'user' ? 'active' : ''}`}
+                    onClick={() => setLoginRole('user')}
+                >
+                    User
+                </button>
+                <button
+                    type="button"
+                    className={`role-button ${loginRole === 'admin' ? 'active' : ''}`}
+                    onClick={() => setLoginRole('admin')}
+                >
+                    Admin
+                </button>
+            </div>
+        )}
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
         {/* Google Login Button (only for login) */}
         {isLogin && (

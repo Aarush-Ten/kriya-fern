@@ -2,30 +2,53 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Plus, CheckSquare, List, CalendarDays, User, Flag, Clock } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+<<<<<<< HEAD
 import { useTheme, useAuth } from '../App';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 Chart.register(ArcElement, Tooltip, Legend);
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
 // Components
 import Task from './Component/Task';
 import TodoList from './Component/TodoList';
 import CustomDropdown from './Component/CustomDropDown';
 import { GrainOverlay, GrainContainer } from './GrainOverlay01';
+<<<<<<< HEAD
 import AnalyticsDashboard from './Component/AnalyticsDashboard';
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
 // CSS
 import './App.css';
 
 // Firebase
+<<<<<<< HEAD
 import { collection, addDoc, setDoc, doc, deleteDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
 const App = () => {
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(true);
+=======
+import { collection, addDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
+import { db } from "../firebase";
+
+const App = () => {
+  const initialUsers = [
+    { id: 1, name: 'Harmish', tasks: [], completed: false, visible: true, lists: [] },
+    { id: 2, name: 'Aarush', tasks: [], completed: false, visible: true, lists: [] },
+    { id: 3, name: 'Animesh', tasks: [], completed: false, visible: true, lists: [] },
+    { id: 4, name: 'Ayush', tasks: [], completed: false, visible: true, lists: [] },
+    { id: 5, name: 'Sarthak', tasks: [], completed: false, visible: true, lists: [] },
+    { id: 6, name: 'Mansi', tasks: [], completed: false, visible: true, lists: [] },
+  ];
+
+  const [lists, setLists] = useState(initialUsers);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
   const [selectedType, setSelectedType] = useState('task');
   const [inputValue, setInputValue] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
@@ -36,12 +59,16 @@ const App = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [editingTaskInfo, setEditingTaskInfo] = useState(null);
   const [editingText, setEditingText] = useState('');
+<<<<<<< HEAD
   const [showHiddenUsers, setShowHiddenUsers] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(true);
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
   const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
 
+<<<<<<< HEAD
   const { theme, toggleTheme } = useTheme();
   const { user } = useAuth();
 
@@ -98,6 +125,8 @@ const App = () => {
     }
   };
 
+=======
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
   const convertTo24Hour = (time12h) => {
     const [time, modifier] = time12h.split(' ');
     let [hours, minutes] = time.split(':');
@@ -206,6 +235,7 @@ const App = () => {
 
     setLists(updatedLists);
 
+<<<<<<< HEAD
     const updatedUser = updatedLists.find(user => user.uid === selectedUser);
     if (updatedUser) {
       try {
@@ -218,11 +248,24 @@ const App = () => {
           name: updatedUser.name,
           fullName: updatedUser.name,
           email: updatedUser.email,
+=======
+    const updatedUser = updatedLists.find(user => user.id === editingTaskInfo.listId);
+    if (updatedUser) {
+      try {
+        const userRef = doc(db, "users", String(updatedUser.name));
+        await setDoc(userRef, {
+          id: updatedUser.id,
+          name: updatedUser.name,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           tasks: updatedUser.tasks,
           lists: updatedUser.lists,
           completed: updatedUser.completed,
           notes: updatedUser.notes || '',
+<<<<<<< HEAD
         }, { merge: true });
+=======
+        });
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
         console.log("Task updated successfully in Firebase");
       } catch (error) {
         console.error("Error updating task in Firebase:", error);
@@ -265,6 +308,7 @@ const App = () => {
     const updatedUser = updatedLists.find(user => user.id === id);
     if (updatedUser) {
       try {
+<<<<<<< HEAD
         const collectionName = updatedUser.isAdmin ? "admins" : "users";
         const documentId = updatedUser.isAdmin ? (updatedUser.uid || updatedUser.name) : updatedUser.uid;
         
@@ -274,11 +318,21 @@ const App = () => {
           name: updatedUser.name,
           fullName: updatedUser.name,
           email: updatedUser.email,
+=======
+        const userRef = doc(db, "users", String(updatedUser.name));
+        await setDoc(userRef, { // Overwrite the entire user document with updated data
+          id: updatedUser.id,
+          name: updatedUser.name,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           tasks: updatedUser.tasks,
           lists: updatedUser.lists,
           completed: updatedUser.completed,
           notes: updatedUser.notes || '',
+<<<<<<< HEAD
         }, { merge: true });
+=======
+        });
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
         console.log("List completion updated successfully in Firebase for user:", updatedUser.name);
       } catch (error) {
         console.error("Error updating list completion in Firebase:", error);
@@ -286,6 +340,7 @@ const App = () => {
     }
   };
 
+<<<<<<< HEAD
   const restoreUser = async (id) => {
     const targetList = lists.find(list => list.id === id);
     if (targetList) {
@@ -334,6 +389,24 @@ const App = () => {
           console.log("User hidden successfully in Firebase:", targetList.name);
         } catch (error) {
           console.error("Error hiding user in Firebase:", error);
+=======
+  const deleteList = async (id) => {
+    const targetList = lists.find(list => list.id === id);
+    if (confirm(`Do you want to delete the "${targetList?.name}" user?`)) {
+      const updatedLists = lists.map(list =>
+        list.id === id ? { ...list, tasks: [], visible: false, lists: [] } : list // Also clear sublists
+      );
+      setLists(updatedLists); // Update local state first
+
+      // Delete the corresponding document from Firebase
+      if (targetList) {
+        try {
+          const userRef = doc(db, "users", String(targetList.name));
+          await deleteDoc(userRef); // Delete the user document
+          console.log("User document deleted successfully from Firebase:", targetList.name);
+        } catch (error) {
+          console.error("Error deleting user document from Firebase:", error);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
         }
       }
     }
@@ -356,6 +429,7 @@ const App = () => {
     const updatedUser = updatedLists.find(user => user.id === listId);
     if (updatedUser) {
       try {
+<<<<<<< HEAD
         const collectionName = updatedUser.isAdmin ? "admins" : "users";
         const documentId = updatedUser.isAdmin ? (updatedUser.uid || updatedUser.name) : updatedUser.uid;
         
@@ -365,11 +439,21 @@ const App = () => {
           name: updatedUser.name,
           fullName: updatedUser.name,
           email: updatedUser.email,
+=======
+        const userRef = doc(db, "users", String(updatedUser.name));
+        await setDoc(userRef, { // Overwrite the entire user document with updated data
+          id: updatedUser.id,
+          name: updatedUser.name,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           tasks: updatedUser.tasks,
           lists: updatedUser.lists,
           completed: updatedUser.completed,
           notes: updatedUser.notes || '',
+<<<<<<< HEAD
         }, { merge: true });
+=======
+        });
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
         console.log("Main task completion updated successfully in Firebase for user:", updatedUser.name);
       } catch (error) {
         console.error("Error updating main task completion in Firebase:", error);
@@ -392,6 +476,7 @@ const App = () => {
       const updatedUser = updatedLists.find(user => user.id === listId);
       if (updatedUser) {
         try {
+<<<<<<< HEAD
           const collectionName = updatedUser.isAdmin ? "admins" : "users";
           const documentId = updatedUser.isAdmin ? (updatedUser.uid || updatedUser.name) : updatedUser.uid;
           
@@ -401,11 +486,21 @@ const App = () => {
             name: updatedUser.name,
             fullName: updatedUser.name,
             email: updatedUser.email,
+=======
+          const userRef = doc(db, "users", String(updatedUser.name));
+          await setDoc(userRef, { // Overwrite the entire user document with updated data
+            id: updatedUser.id,
+            name: updatedUser.name,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
             tasks: updatedUser.tasks,
             lists: updatedUser.lists,
             completed: updatedUser.completed,
             notes: updatedUser.notes || '',
+<<<<<<< HEAD
           }, { merge: true });
+=======
+          });
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           console.log("Main task deleted successfully from Firebase for user:", updatedUser.name);
         } catch (error) {
           console.error("Error deleting main task from Firebase:", error);
@@ -441,6 +536,7 @@ const App = () => {
     const updatedUser = updatedLists.find(user => user.id === userId);
     if (updatedUser) {
       try {
+<<<<<<< HEAD
         const collectionName = updatedUser.isAdmin ? "admins" : "users";
         const documentId = updatedUser.isAdmin ? (updatedUser.uid || updatedUser.name) : updatedUser.uid;
         
@@ -450,11 +546,21 @@ const App = () => {
           name: updatedUser.name,
           fullName: updatedUser.name,
           email: updatedUser.email,
+=======
+        const userRef = doc(db, "users", String(updatedUser.name));
+        await setDoc(userRef, { // Overwrite the entire user document with updated data
+          id: updatedUser.id,
+          name: updatedUser.name,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           tasks: updatedUser.tasks,
           lists: updatedUser.lists,
           completed: updatedUser.completed,
           notes: updatedUser.notes || '',
+<<<<<<< HEAD
         }, { merge: true });
+=======
+        });
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
         console.log("Sublist task completion updated successfully in Firebase for user:", updatedUser.name);
       } catch (error) {
         console.error("Error updating sublist task completion in Firebase:", error);
@@ -492,6 +598,7 @@ const App = () => {
       const updatedUser = updatedLists.find(user => user.id === userId);
       if (updatedUser) {
         try {
+<<<<<<< HEAD
           const collectionName = updatedUser.isAdmin ? "admins" : "users";
           const documentId = updatedUser.isAdmin ? (updatedUser.uid || updatedUser.name) : updatedUser.uid;
           
@@ -501,11 +608,21 @@ const App = () => {
             name: updatedUser.name,
             fullName: updatedUser.name,
             email: updatedUser.email,
+=======
+          const userRef = doc(db, "users", String(updatedUser.name));
+          await setDoc(userRef, { // Overwrite the entire user document with updated data
+            id: updatedUser.id,
+            name: updatedUser.name,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
             tasks: updatedUser.tasks,
             lists: updatedUser.lists,
             completed: updatedUser.completed,
             notes: updatedUser.notes || '',
+<<<<<<< HEAD
           }, { merge: true });
+=======
+          });
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           console.log("Sublist task deleted successfully from Firebase for user:", updatedUser.name);
         } catch (error) {
           console.error("Error deleting sublist task from Firebase:", error);
@@ -545,12 +662,17 @@ const App = () => {
       };
     });
 
+<<<<<<< HEAD
     setLists(updatedLists);
+=======
+    setLists(updatedLists); // Update local state first
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
     // Find the user to update in Firebase
     const updatedUser = updatedLists.find(user => user.id === userId);
     if (updatedUser) {
       try {
+<<<<<<< HEAD
         const collectionName = updatedUser.isAdmin ? "admins" : "users";
         const documentId = updatedUser.isAdmin ? (updatedUser.uid || updatedUser.name) : updatedUser.uid;
         
@@ -560,13 +682,24 @@ const App = () => {
           name: updatedUser.name,
           fullName: updatedUser.name,
           email: updatedUser.email,
+=======
+        const userRef = doc(db, "users", String(updatedUser.name));
+        await setDoc(userRef, { // Overwrite the entire user document with updated data
+          id: updatedUser.id,
+          name: updatedUser.name,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           tasks: updatedUser.tasks,
           lists: updatedUser.lists, // Crucially, include the updated sublists
           completed: updatedUser.completed,
           notes: updatedUser.notes || '',
+<<<<<<< HEAD
         }, { merge: true });
         console.log("Sublist task added successfully to Firebase for user:", updatedUser.name);
         await loadUsersFromFirestore(); // Refresh lists after adding
+=======
+        });
+        console.log("Sublist task added successfully to Firebase for user:", updatedUser.name);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
       } catch (error) {
         console.error("Error adding sublist task to Firebase:", error);
       }
@@ -574,13 +707,21 @@ const App = () => {
   };
 
   const handleAdd = () => {
+<<<<<<< HEAD
     if (!selectedUser) return; // No user selected
     if (!inputValue.trim()) return;
+=======
+    if (!inputValue.trim() || !selectedUser) return;
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
     const combinedDeadline = combineDateTime(deadline || new Date(formattedDate), deadlineTime);
 
     const updatedLists = lists.map(user => {
+<<<<<<< HEAD
       if (user.uid !== selectedUser) return user;
+=======
+      if (user.id !== selectedUser) return user;
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
 
       if (selectedType === 'task') {
         const newTask = {
@@ -618,6 +759,7 @@ const App = () => {
 
     setLists(updatedLists);
 
+<<<<<<< HEAD
     const updatedUser = updatedLists.find(user => user.uid === selectedUser);
     if (!updatedUser) return; // No matching user found
 
@@ -633,13 +775,28 @@ const App = () => {
           name: updatedUser.name,
           fullName: updatedUser.name,
           email: updatedUser.email,
+=======
+    const updatedUser = updatedLists.find(user => user.id === selectedUser);
+
+    const uploadToFirebase = async () => {
+      try {
+        const userRef = doc(db, "users", String(updatedUser.name));
+        await setDoc(userRef, {
+          id: updatedUser.id,
+          name: updatedUser.name,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
           tasks: updatedUser.tasks,
           lists: updatedUser.lists,
           completed: updatedUser.completed,
           notes: updatedUser.notes || '',
+<<<<<<< HEAD
         }, { merge: true }); // Use merge to preserve existing data
         console.log("Document written with ID: ", userRef.id);
         await loadUsersFromFirestore(); // Refresh lists after adding
+=======
+        });
+        console.log("Document written with ID: ", userRef.id);
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
       } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -653,7 +810,11 @@ const App = () => {
   };
 
   const userOptions = lists.map(user => ({
+<<<<<<< HEAD
     value: user.uid,
+=======
+    value: user.id,
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     label: user.name,
     icon: <User size={16} />,
   }));
@@ -669,6 +830,7 @@ const App = () => {
     { value: 'list', label: 'List' },
   ];
 
+<<<<<<< HEAD
   // Avatar and greeting logic
   const currentUser = lists.find(u => u.uid === selectedUser) || lists[0];
   const getInitials = (name, email) => {
@@ -885,6 +1047,138 @@ const App = () => {
           )}
         </>
       )}
+=======
+  return (
+    <div className="app">
+      <div className="app-header">
+        <h1 className="app-title">Todo App</h1>
+        <div className="search-container">
+          <input
+            type="text"
+            onChange={(e) => setSearchText(e.target.value)}
+            value={searchText}
+            placeholder="Search..."
+            className="search-input"
+          />
+        </div>
+      </div>
+
+      <div className="add-form">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleAdd()}
+          placeholder="Add a new task or list..."
+          className="main-input"
+        />
+
+        <CustomDropdown
+          options={userOptions}
+          selectedValue={selectedUser}
+          setSelectedValue={setSelectedUser}
+          placeholder="Select User"
+        />
+
+        <CustomDropdown
+          options={typesOptions}
+          selectedValue={selectedType}
+          setSelectedValue={setSelectedType}
+          placeholder="Select Type"
+        />
+
+        <CustomDropdown
+          options={priorityOptions}
+          selectedValue={selectedPriority}
+          setSelectedValue={setSelectedPriority}
+          placeholder="Priority"
+        />
+
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <button
+            onClick={toggleCalendar}
+            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            title="Pick deadline date and time"
+          >
+            <CalendarDays size={24} />
+          </button>
+
+          {showCalendar && (
+            <div className="calendar-dropdown">
+              <DatePicker
+                selected={deadline}
+                onChange={(date) => setDeadline(date)}
+                inline
+                minDate={new Date()}
+              />
+              <div className="time-selection">
+                <label className="time-label">Select Time:</label>
+                <CustomDropdown
+                  options={timeOptions}
+                  selectedValue={deadlineTime}
+                  setSelectedValue={setDeadlineTime}
+                  placeholder="Time"
+                />
+              </div>
+              <div className="calendar-actions">
+                <button
+                  onClick={() => setShowCalendar(false)}
+                  className="calendar-done-btn"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <button
+          onClick={handleAdd}
+          className="add-btn primary"
+          disabled={!inputValue.trim() || !selectedUser}
+        >
+          <Plus size={16} /> Add
+        </button>
+      </div>
+
+      <div className="content-area">
+        {filteredLists.length > 0 ? (
+          <div className="lists-section">
+            <h2 className="section-title">
+              <List size={20} /> Users with Tasks ({filteredLists.length}/{lists.length})
+            </h2>
+            <div className="lists-container">
+              {filteredLists
+                .sort((a, b) => a.completed - b.completed)
+                .map((list) => (
+                  <TodoList
+                    key={list.id}
+                    list={list}
+                    subLists={list.lists}
+                    onComplete={completeList}
+                    onDelete={deleteList}
+                    onAddTaskToSublist={handleAddTaskToSublist}
+                    onCompleteTask={completeTaskInList}
+                    onDeleteTask={deleteTaskFromList}
+                    onCompleteSublistTask={completeSublistTask}
+                    onDeleteSublistTask={deleteSublistTask}
+                    editingTaskInfo={editingTaskInfo}
+                    editingText={editingText}
+                    setEditingText={setEditingText}
+                    onEditTask={handleEditTask}
+                    onSaveEdit={handleSaveEdit}
+                    onCancelEdit={handleCancelEdit}
+                  />
+                ))}
+            </div>
+          </div>
+        ) : (
+          <div className="empty-state">
+            <p>No users with tasks yet. Add a task to see the user here.</p>
+          </div>
+        )}
+      </div>
+>>>>>>> 717bb6c8201bc91ebe2dbe2aeba9e89db86f767f
     </div>
   );
 };
